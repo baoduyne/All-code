@@ -9,12 +9,12 @@ class student {
 private :
 
 string name ;
-int age;
+string age;
 int id;
 
 public: 
 student(){};
-student(string ten, int tuoi , int msv ) : name(ten) , age(tuoi) , id(msv){}
+student(string ten, string tuoi , int msv ) : name(ten) , age(tuoi) , id(msv){}
 
 void themsv();
 
@@ -25,6 +25,12 @@ void xoasv(int a);
 void xoatoanbosv();
 
 void show();
+
+void timsv();
+
+void docfile();
+
+void nhapfilebackup();
 
 
 
@@ -43,12 +49,16 @@ int main(){
 student sv;
 int chose;
 ID = 0;
+
+sv.docfile();
+
 goback:
 print();
-cout<<"1.Them sinh vien"<<endl;
-cout<<"2.Xoa sinh vien"<<endl;
-cout<<"3.Xoa toan bo sinh vien"<<endl;
-cout<<"4.Xem danh sach sinh vien"<<endl;
+cout<<"1.Them sinh vien."<<endl;
+cout<<"2.Xoa sinh vien."<<endl;
+cout<<"3.Xoa toan bo sinh vien."<<endl;
+cout<<"4.Xem danh sach sinh vien."<<endl;
+cout<<"5.Tim sinh vien."<<endl;
 cout<<"0.Thoat"<<endl;
 print();
 cout<<"P/S : Toan bo thong tin sinh vien se duoc them vao file 'text.txt' "<<endl;
@@ -71,6 +81,15 @@ case 4:
 sv.show();
 system("cls");
 goto goback;
+case 5:
+
+sv.timsv();
+system("cls");
+goto goback;
+
+case 6:
+sv.docfile();
+sv.show();
 case 0:
 return 0;
 }
@@ -80,8 +99,8 @@ return 0;
 
 void student::themsv(){
 
-string ten;
-int tuoi,msv;
+string ten,tuoi;
+int msv;
 
    cout<<"Nhap ten sinh vien : "; cin>>ten;
    cout<<"Nhap tuoi sinh vien : "; cin>>tuoi;
@@ -92,6 +111,7 @@ msv = ID;
 listsv.push_back(student(ten,tuoi,msv));
 
 nhapfile();
+nhapfilebackup();
 
 cout<<"DONE!";
 system("pause");
@@ -144,8 +164,66 @@ void student::show(){
 void student::nhapfile(){
     fstream file;
     file.open("text.txt",ios::app);
-    file<<"-------------"<<endl;
                   file<<"Name : "<<listsv[ID-1].name<<endl;
                   file<<"Age : "<<listsv[ID-1].age<<endl;
     file.close();
+
 }
+
+void student::nhapfilebackup(){
+
+    fstream file1;
+    file1.open("text1.txt",ios::app);
+                file1<<listsv[ID-1].name<<endl;
+                file1<<listsv[ID-1].age<<endl;
+    file1.close();
+
+}
+
+void student::timsv(){
+
+cout<<"Nhap ten sinh vien can tim : " ;
+string ten;
+cin>>ten;
+
+for(int i = 0 ; i<listsv.size() ; i++){
+
+    if(listsv[i].name == ten) {
+
+        cout<<"ID : "<<listsv[i].id<<endl;
+        cout<<"Ten : "<<listsv[i].name<<endl;
+        cout<<"Tuoi : "<<listsv[i].age<<endl;
+
+    }
+}
+
+cout<<"DONE!"<<endl;
+system("pause");
+}
+
+void student::docfile(){
+fstream docf;
+docf.open("text1.txt",ios::in);
+
+     string tt;
+    int i = 0;
+    int stt=0;
+
+    string ten,tuoi;
+  while(getline(docf,tt)){
+ if(i == 1){
+tuoi =tt;
+    i=0;
+    ID++;
+    listsv.push_back(student(ten,tuoi,ID));
+    goto backk;
+ }
+ten = tt;
+i++;
+backk:
+int p;
+  }
+docf.close();
+
+}
+
