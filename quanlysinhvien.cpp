@@ -1,229 +1,215 @@
 #include<iostream>
+#include<fstream>
 #include<vector>
 #include<string>
-#include<fstream>
 
 using namespace std;
 
-class student {
-private :
+class student{
+private:
 
-string name ;
-string age;
 int id;
+string name;
+string date;
 
-public: 
+public:
+
 student(){};
-student(string ten, string tuoi , int msv ) : name(ten) , age(tuoi) , id(msv){}
+student(int msv,string ten,string tuoi): id(msv) , name(ten) , date(tuoi){};
 
 void themsv();
 
-void nhapfile();
+void timsv(string ten);
 
-void xoasv(int a);
+void xoasv(int msv);
 
-void xoatoanbosv();
+void nhapsv();
+
+void xuatsv();
 
 void show();
 
-void timsv();
+void xoatoanbo();
 
-void docfile();
-
-void nhapfilebackup();
+void xoasvtrongfile();
 
 
-
-vector<student> listsv;
-
+    vector<student> listsv;
 };
 
-void print(){
-cout<<"----------------------------"<<endl;
+void draw(){
+    cout<<"-------------------------------"<<endl;
 }
 
 static int ID;
 
 
 int main(){
-student sv;
-int chose;
-ID = 0;
+    student sv;
+ID=0;
 
-sv.docfile();
+sv.xuatsv();
 
 goback:
-print();
-cout<<"1.Them sinh vien."<<endl;
-cout<<"2.Xoa sinh vien."<<endl;
-cout<<"3.Xoa toan bo sinh vien."<<endl;
-cout<<"4.Xem danh sach sinh vien."<<endl;
-cout<<"5.Tim sinh vien."<<endl;
+string N;
+int xoa;
+int choice;
+
+
+
+cout<<"1.Them sinh vien"<<endl;
+cout<<"2.Xoa sinh vien"<<endl;
+cout<<"3.Xem danh sach sinh vien"<<endl;
+cout<<"4.Xoa toan bo danh sach sinh vien"<<endl;
+cout<<"5.Tim sinh vien"<<endl;
 cout<<"0.Thoat"<<endl;
-print();
-cout<<"P/S : Toan bo thong tin sinh vien se duoc them vao file 'text.txt' "<<endl;
-cin>>chose;
+draw();
+cout<<"CHOSE : ";cin>>choice;
+       switch(choice)
 
-switch(chose){
-case 1:
-sv.themsv();
-goto goback;
-case 2:
-int A;
-         sv.show();           
-           cout<<"Nhap ID sinh vien can xoa : "; cin>>A;
-sv.xoasv(A);
-goto goback;
-case 3:
-sv.xoatoanbosv();
-goto goback;
-case 4:
-sv.show();
-system("cls");
-goto goback;
-case 5:
+       {
+            case 1:
+                    draw();
+                    sv.themsv();
+                    cout<<"DONE...!"<<endl;
+                    system("pause");
+                    system("cls");
+                    goto goback;
+            case 2:
+                   draw();
+                   sv.show();
+                   cout<<"Nhap msv can xoa : " ; cin >> xoa;
+                   sv.xoasv(xoa);
+                   cout<<"DONE...!"<<endl;
+                    system("pause");
+                    system("cls");
+                    goto goback;
 
-sv.timsv();
-system("cls");
-goto goback;
+            case 3:
+                draw();
+                sv.show();
+                cout<<"DONE...!"<<endl;
+                    system("pause");
+                    system("cls");
+                    goto goback;
+                
+            case 4:
+                 draw();
+                 sv.xoatoanbo();
+                 cout<<"DONE...!"<<endl;
+                    system("pause");
+                    system("cls");
+                    goto goback;
 
-case 6:
-sv.docfile();
-sv.show();
-case 0:
-return 0;
-}
+            case 5:
+            draw();
+            cout<<"Nhap ten sinh vien can tim :"; cin >> N;
+                   sv.timsv(N);
+            system("pause");
+            system("cls");
+            goto goback;
+            case 0:
+            return 0;
+                           default : 
+                           cout<<"vui long nhap lai..."<<endl;
+                           goto goback;
+
+       }
+
 
 
 }
 
 void student::themsv(){
+    
+    string ten;
+    string tuoi;
 
-string ten,tuoi;
-int msv;
+    cout<<"Name : ";cin>> ten;
+    cout<<"Date : ";cin>> tuoi;
 
-   cout<<"Nhap ten sinh vien : "; cin>>ten;
-   cout<<"Nhap tuoi sinh vien : "; cin>>tuoi;
-   ID++;
 
-msv = ID;
-
-listsv.push_back(student(ten,tuoi,msv));
-
-nhapfile();
-nhapfilebackup();
-
-cout<<"DONE!";
-system("pause");
-system("cls");
-
+    listsv.push_back(student(ID,ten,tuoi));
+    nhapsv();
+    ID++;
 }
 
-void student::xoasv(int a){
-         
-  
-for(int i = 0 ; i<listsv.size();i++){
-    if(listsv[i].id == a) listsv.erase(listsv.begin()+i);
+void student::nhapsv(){
+    fstream file;
+    file.open("text2.txt",ios::app);
+file<<listsv[ID].name<<endl;
+file<<listsv[ID].date<<endl;
+    file.close();
 }
 
-for(int i = 0 ; i<listsv.size(); i++){
-    listsv[i].id --;
-}
-
-ID--;
-
-cout<<"DONE!";
-system("pause");
-system("cls");
-
-}
-
-void student::xoatoanbosv(){
-    listsv.clear();
-    cout<<"DONE!";
-    system("pause");
-    system("cls");
-ID=0;
+void student::timsv(string ten){
+     
+     for(int i = 0 ; i<ID ; i++){
+        if(ten == listsv[i].name) cout<<"ID: "<<listsv[i].id<<endl;cout<<"Name : "<<listsv[i].name<<endl; cout<<"Date : "<<listsv[i].date<<endl;
+     }
 }
 
 void student::show(){
-    for(int i = 0 ; i<listsv.size();i++){
-       print();
-       
-       cout<<"ID : "<<listsv[i].id<<endl;
-       cout<<"Name : "<<listsv[i].name<<endl;
-       cout<<"Age : "<<listsv[i].age<<endl;
-
-    }
-
-    system("pause");
-
-}
-
-
-void student::nhapfile(){
-    fstream file;
-    file.open("text.txt",ios::app);
-                  file<<"Name : "<<listsv[ID-1].name<<endl;
-                  file<<"Age : "<<listsv[ID-1].age<<endl;
-    file.close();
-
-}
-
-void student::nhapfilebackup(){
-
-    fstream file1;
-    file1.open("text1.txt",ios::app);
-                file1<<listsv[ID-1].name<<endl;
-                file1<<listsv[ID-1].age<<endl;
-    file1.close();
-
-}
-
-void student::timsv(){
-
-cout<<"Nhap ten sinh vien can tim : " ;
-string ten;
-cin>>ten;
-
-for(int i = 0 ; i<listsv.size() ; i++){
-
-    if(listsv[i].name == ten) {
-
+    for(int i = 0 ; i<ID ; i++){
         cout<<"ID : "<<listsv[i].id<<endl;
-        cout<<"Ten : "<<listsv[i].name<<endl;
-        cout<<"Tuoi : "<<listsv[i].age<<endl;
-
+        cout<<"Name : "<<listsv[i].name<<endl;
+        cout<<"Date : "<<listsv[i].date<<endl;
     }
 }
 
-cout<<"DONE!"<<endl;
-system("pause");
+void student::xoasv(int msv){
+    for(int i = 0 ; i<ID ;i++){  
+        if(msv == listsv[i].id) listsv.erase(listsv.begin() + i);
+    }
+ID--;
+xoasvtrongfile();
 }
 
-void student::docfile(){
-fstream docf;
-docf.open("text1.txt",ios::in);
+void student::xuatsv(){
+    fstream file1;
+    file1.open("text2.txt",ios::in);
+                                   string dong;
+                            
+                                   int i = 0;
+                                   string tuoi;
+                                   string ten;
+                                   
+                                   while (getline(file1,dong))
+                                   {
+                                    
+                                    if(i==1){
+                                         tuoi = dong; 
+                                         i=0;
+                                    
+                                         listsv.push_back(student(ID,ten,tuoi));
+                                         ID++;
+                                         goto bach;
+                                    }
+                                    ten = dong ;
+                                    i++;
+                                    bach:
+                                    int p;
+                                   }
+                                   
+                                   
+    file1.close();
+}
 
-     string tt;
-    int i = 0;
-    int stt=0;
+void student::xoatoanbo(){
+    for(int i = 0 ; i<ID ; i++){
+        listsv.erase(listsv.begin()+i);
+    }
+    ID = 0;
+    xoasvtrongfile();
+}
 
-    string ten,tuoi;
-  while(getline(docf,tt)){
- if(i == 1){
-tuoi =tt;
-    i=0;
-    ID++;
-    listsv.push_back(student(ten,tuoi,ID));
-    goto backk;
- }
-ten = tt;
-i++;
-backk:
-int p;
-  }
-docf.close();
-
+void student::xoasvtrongfile(){
+    fstream file;
+    file.open("text2.txt",ios::out);
+    for(int i = 0 ; i<ID ; i++){
+        file<<listsv[i].name<<endl;
+        file<<listsv[i].date<<endl;
+    }
+    file.close();
 }
 
